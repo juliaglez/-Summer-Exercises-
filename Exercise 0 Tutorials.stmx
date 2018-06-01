@@ -113,17 +113,17 @@
 				<units>Per Year</units>
 			</aux>
 			<group name="Population Sector" run="true">
-				<entity name="being_born"/>
-				<entity name="Birth_rate"/>
-				<entity name='"resources/person"'/>
-				<entity name="dying"/>
 				<entity name="death_rate"/>
+				<entity name="dying"/>
+				<entity name='"resources/person"'/>
+				<entity name="Birth_rate"/>
+				<entity name="being_born"/>
 			</group>
 			<group name="Natural resources Sector" run="false">
-				<entity name="Natural_resources"/>
-				<entity name="regeneration"/>
-				<entity name="regeneration_rate"/>
 				<entity name="consuming"/>
+				<entity name="regeneration_rate"/>
+				<entity name="regeneration"/>
+				<entity name="Natural_resources"/>
 			</group>
 			<isee:dependencies>
 				<var name="being_born">

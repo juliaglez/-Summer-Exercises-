@@ -2,7 +2,7 @@
 <xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
 	<header>
 		<smile version="1.0" namespace="std, isee"/>
-		<name>Exercise 4 Living with parents</name>
+		<name>Exercise 3 Living with parents</name>
 		<uuid>4a80b58f-9acb-4da4-8746-ad36c9c77e8f</uuid>
 		<vendor>isee systems, inc.</vendor>
 		<product version="1.6.2" isee:build_number="1445" isee:saved_by_v1="true" lang="en">Stella Architect</product>
@@ -24,6 +24,10 @@
 			<alias>person</alias>
 			<alias>persons</alias>
 		</unit>
+		<unit name="Days">
+			<eqn/>
+			<alias>day</alias>
+		</unit>
 		<unit name="Months">
 			<eqn/>
 			<alias>mo</alias>
@@ -33,7 +37,7 @@
 	<model>
 		<variables>
 			<flow name="Moving in with parents">
-				<eqn>0.1</eqn>
+				<eqn>100</eqn>
 				<non_negative/>
 				<units>People/Months</units>
 			</flow>
@@ -56,7 +60,8 @@
 				<units>People</units>
 			</stock>
 			<aux name="Length of delay">
-				<eqn>.1</eqn>
+				<eqn>200</eqn>
+				<units>days</units>
 			</aux>
 			<isee:dependencies>
 				<var name="Transition">
@@ -105,7 +110,7 @@
 				<isee:spatial_map color="black" background="white" font_size="12pt"/>
 				<isee:animation_object color="black" background="white" font_size="12pt"/>
 			</style>
-			<view isee:show_pages="false" page_width="1403" page_height="992" isee:popup_graphs_are_comparative="true" type="stock_flow">
+			<view isee:show_pages="false" page_width="1403" page_height="992" isee:scroll_y="69" isee:popup_graphs_are_comparative="true" type="stock_flow">
 				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
 					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
 						<shape type="rectangle" width="45" height="35"/>
@@ -159,13 +164,13 @@
 					<from>Living_with_parents</from>
 					<to>Transition</to>
 				</connector>
-				<aux x="295" y="378" name="Length of delay"/>
+				<aux x="296" y="380" name="Length of delay"/>
 				<connector uid="2" polarity="-" isee:polarity_placement="outside" angle="82.6476">
 					<from>Length_of_delay</from>
 					<to>Transition</to>
 				</connector>
-				<stacked_container uid="3" x="275" y="551">
-					<graph x="100" y="426" width="350" height="250" type="time_series" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+				<stacked_container uid="3" x="278.25" y="545">
+					<graph x="103.25" y="420" width="350" height="250" type="time_series" show_grid="true" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="6" num_y_grid_lines="6" num_x_labels="6" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" to="2500" from="0" x_axis_title="days" left_axis_title="F(x)" left_axis_multi_scale="true" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
 						<plot color="blue" pen_width="1" index="0" show_y_axis="true">
 							<entity name="Living_with_parents"/>
 						</plot>

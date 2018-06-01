@@ -45,8 +45,8 @@
 					<in>Influence_in_overview_of_social_issues</in>
 				</var>
 				<var name="Number_of_failures">
-					<in>Number_of_users</in>
 					<in>Influence_in_overview_of_social_issues</in>
+					<in>Number_of_users</in>
 				</var>
 				<var name="Adapt_the_application_to_any_phone">
 					<in>Offer_a_plan_conidering_VOC</in>
@@ -160,7 +160,7 @@
 					</graph>
 					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous"/>
 				</style>
-				<aux x="385.714" y="407.856" width="18" height="18" name="Influence in overview of social issues"/>
+				<aux x="394.714" y="416.856" name="Influence in overview of social issues"/>
 				<aux label_side="bottom" x="438.286" y="471.714" name="Effect on democracy\nand national security"/>
 				<module x="366.946" y="363.714" width="81.25" height="12" name="Number of failures"/>
 				<connector uid="1" polarity="+" isee:polarity_placement="outside" angle="74.7449">

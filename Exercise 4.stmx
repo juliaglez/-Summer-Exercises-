@@ -1,0 +1,596 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmile version="1.0" xmlns="http://docs.oasis-open.org/xmile/ns/XMILE/v1.0" xmlns:isee="http://iseesystems.com/XMILE">
+	<header>
+		<smile version="1.0" namespace="std, isee"/>
+		<name>WellbeingJ</name>
+		<uuid>fe3741e3-3f8c-4a4d-b346-786de3413a01</uuid>
+		<vendor>isee systems, inc.</vendor>
+		<product version="1.6.2" isee:build_number="1445" isee:saved_by_v1="true" lang="en">Stella Architect</product>
+	</header>
+	<sim_specs isee:simulation_delay="0" method="Euler" time_units="Months" isee:instantaneous_flows="false">
+		<start>0</start>
+		<stop>48</stop>
+		<dt reciprocal="true">64</dt>
+	</sim_specs>
+	<isee:prefs show_module_prefix="true" live_update_on_drag="true" show_restore_buttons="false" layer="model" saved_runs="5" keep="false" rifp="true"/>
+	<isee:multiplayer_settings include_chat="true" allow_observers="false" advance_time_increment="1" observer_start_page="home_page" enabled="false"/>
+	<isee:time_formats default_format="Builtin">
+		<isee:time_format name="Builtin" type="adaptive"/>
+	</isee:time_formats>
+	<default_format/>
+	<data>
+		<import enabled="false" isee:overwrite="false" orientation="horizontal" resource="/Users/psh/Desktop/Demo/data-import.xls" type="Excel" worksheet="Sheet1"/>
+	</data>
+	<model_units>
+		<unit name="Months">
+			<eqn/>
+			<alias>mo</alias>
+			<alias>month</alias>
+		</unit>
+	</model_units>
+	<model>
+		<variables>
+			<stock name="Sense of\nSelf">
+				<eqn>Initial_Sense_of_Self</eqn>
+				<inflow>Building_Sense_of_Self</inflow>
+				<non_negative/>
+			</stock>
+			<flow name="Building\nSense of Self">
+				<eqn>((100-Sense_of_Self)/100)*
+(Physical_Health*Family_Support/50-Sense_of_Self)/Sense_of_Self_AT +
+PULSE(Identity_Activity, 3, 0)*Sense_of_Self</eqn>
+			</flow>
+			<stock name="Physical\nHealth">
+				<eqn>Initial_Health</eqn>
+				<inflow>Change_in_Health</inflow>
+				<non_negative/>
+			</stock>
+			<flow name="Change in\nHealth">
+				<eqn>((100-Physical_Health)/100)*
+(Sense_of_Self-Physical_Health)/Physical_Health_AT + 
+PULSE(Physical_Activity,  3, 0)*Physical_Health</eqn>
+			</flow>
+			<aux name="Initial Sense\nof Self">
+				<eqn>50</eqn>
+				<range min="0" max="100"/>
+			</aux>
+			<aux name="Initial\nHealth">
+				<eqn>50</eqn>
+				<range min="0" max="100"/>
+			</aux>
+			<aux name="Physical\nHealth AT">
+				<eqn>5</eqn>
+				<units>Months</units>
+			</aux>
+			<aux name="Sense of\nSelf AT">
+				<eqn>5</eqn>
+			</aux>
+			<aux name="Physical\nActivity">
+				<eqn>0</eqn>
+				<range min="-0.5" max="0.5"/>
+			</aux>
+			<aux name="Identity\nActivity">
+				<eqn>0</eqn>
+				<range min="-0.5" max="0.5"/>
+			</aux>
+			<stock name="Family\nSupport">
+				<eqn>Initial_Family_Support</eqn>
+				<inflow>Change_in_Family_Support</inflow>
+				<non_negative/>
+			</stock>
+			<flow name="Change in\nFamily Support">
+				<eqn>(Sense_of_Self-Family_Support)/Change_in_Family_Support_AT +
+PULSE(Family_Activity,  3, 0)*Family_Support</eqn>
+			</flow>
+			<aux name="Change in Family\nSupport AT">
+				<eqn>5</eqn>
+			</aux>
+			<aux name="Initial\nFamily\nSupport">
+				<eqn>50</eqn>
+				<range min="0" max="100"/>
+			</aux>
+			<aux name="Family\nActivity">
+				<eqn>0</eqn>
+				<range min="-0.5" max="0.5"/>
+			</aux>
+			<isee:dependencies>
+				<var name="Sense_of_Self">
+					<in>Initial_Sense_of_Self</in>
+				</var>
+				<var name="Building_Sense_of_Self">
+					<in>Physical_Health</in>
+					<in>Sense_of_Self</in>
+					<in>Sense_of_Self_AT</in>
+					<in>Identity_Activity</in>
+					<in>Family_Support</in>
+				</var>
+				<var name="Physical_Health">
+					<in>Initial_Health</in>
+				</var>
+				<var name="Change_in_Health">
+					<in>Sense_of_Self</in>
+					<in>Physical_Health</in>
+					<in>Physical_Health_AT</in>
+					<in>Physical_Activity</in>
+				</var>
+				<var name="Family_Support">
+					<in>Initial_Family_Support</in>
+				</var>
+				<var name="Change_in_Family_Support">
+					<in>Sense_of_Self</in>
+					<in>Family_Support</in>
+					<in>Change_in_Family_Support_AT</in>
+					<in>Family_Activity</in>
+				</var>
+			</isee:dependencies>
+		</variables>
+		<views>
+			<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+				<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+				<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+				<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false">
+					<isee:series_styles>
+						<isee:series_style color="blue" thickness="1"/>
+						<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF7F00" thickness="1"/>
+						<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#FF007F" thickness="1"/>
+						<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+						<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+						<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+						<isee:series_style color="#C8C8C8" thickness="1"/>
+					</isee:series_styles>
+				</graph>
+				<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous"/>
+				<button color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top"/>
+				<isee:annotation color="black" background="#E0E0E0" font_size="12pt" transparent="false" corner_radius="0" isee:flat="false" icon_side="top" popup_background_color="#FFFECF"/>
+				<slider color="black" background="#E0E0E0" font_size="12pt" num_ticks="3" label_side="top" wrap_title="true" isee:always_show_hover_tip="false" input_expands="true" input_width="100"/>
+				<isee:sim_speed_slider color="black" background="white"/>
+				<isee:time_slider color="#E95F74" background="silver"/>
+				<isee:pie_input color="black" background="white" font_size="12pt" legend_position="bottom" isee:transparent="false"/>
+				<knob color="#66CC66" background="#E0E0E0" font_size="12pt" label_side="bottom" wrap_title="true"/>
+				<numeric_input color="black" background="#E0E0E0" font_size="12pt" label_side="left" wrap_title="true" input_expands="false" input_width="100"/>
+				<switch color="black" background="#E0E0E0" font_size="12pt" label_side="top" wrap_title="true" isee:appearance="switch"/>
+				<options color="black" background="white" appearance="radio-buttons" arrangement="vertical"/>
+				<graphical_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<group_input color="black" background="#E0E0E0" font_size="12pt"/>
+				<lamp color="black" background="white" font_size="9pt"/>
+				<gauge color="black" background="white" font_size="9pt" needle_color="#F09F72" bar_color="#EEEEEE" bar_progress_color="black" appearance="radial" num_major_ticks="11" num_minor_ticks="11" show_numeric_value="true"/>
+				<isee:spatial_map color="black" background="white" font_size="12pt"/>
+				<isee:animation_object color="black" background="white" font_size="12pt"/>
+			</style>
+			<view isee:show_pages="false" isee:name_only_modules="true" page_width="1403" page_height="992" isee:page_cols="2" zoom="140" isee:popup_graphs_are_comparative="true" type="stock_flow">
+				<style color="black" background="white" font_style="normal" font_weight="normal" text_decoration="none" text_align="center" vertical_text_align="center" font_color="black" font_family="Arial" font_size="10pt" padding="2" border_color="black" border_width="thin" border_style="none">
+					<stock color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="rectangle" width="45" height="35"/>
+					</stock>
+					<flow color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom"/>
+					<module color="blue" background="white" font_color="blue" font_size="9pt" label_side="top">
+						<shape type="name_only"/>
+					</module>
+					<aux color="blue" background="white" font_color="blue" font_size="9pt" label_side="bottom">
+						<shape type="circle" radius="18"/>
+					</aux>
+					<group color="red" background="white" font_color="red" font_size="9pt"/>
+					<connector color="#FF007F" background="white" font_color="#FF007F" font_size="9pt" isee:thickness="1"/>
+					<text_box color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<isee:loop_indicator color="black" background="white" text_align="left" vertical_text_align="top" font_size="12pt"/>
+					<numeric_display color="blue" background="white" font_size="9pt" isee:transparent="false"/>
+					<graph color="black" background="white" font_size="12pt" axis_color="#666666" grid_color="#C8C8C8" isee:graph_area_color="white" legend_position="bottom" isee:transparent="false" isee:hide_border="false">
+						<isee:series_styles>
+							<isee:series_style color="blue" thickness="1"/>
+							<isee:series_style color="red" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="fuchsia" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="#008F44" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF7F00" thickness="1"/>
+							<isee:series_style color="#7F00FF" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#0CA0FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="lime" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#FF007F" thickness="1"/>
+							<isee:series_style color="aqua" thickness="1" pen_style="dot_dashed"/>
+							<isee:series_style color="#F586FF" thickness="1" pen_style="dotted"/>
+							<isee:series_style color="black" thickness="1" pen_style="dashed"/>
+							<isee:series_style color="#C8C8C8" thickness="1"/>
+						</isee:series_styles>
+					</graph>
+					<table color="black" background="#E0E0E0" text_align="right" font_size="12pt" orientation="vertical" wrap_text="false" isee:auto_fit="true" isee:use_alternate_row_colors="false" isee:unlimited_table_length="false" blank_column_width="80" column_width="160" interval="1" report_balances="beginning" report_flows="instantaneous"/>
+				</style>
+				<stock label_side="center" x="271.042" y="237.083" width="45" height="35" name="Sense of\nSelf"/>
+				<flow label_side="top" x="218.042" y="245.583" width="18" height="18" name="Building\nSense of Self">
+					<pts>
+						<pt x="171.042" y="254.583"/>
+						<pt x="271.042" y="254.583"/>
+					</pts>
+				</flow>
+				<stock label_side="center" x="216.667" y="117.708" name="Physical\nHealth"/>
+				<flow label_side="top" x="298.792" y="117.708" name="Change in\nHealth">
+					<pts>
+						<pt x="370.417" y="117.708"/>
+						<pt x="239.167" y="117.708"/>
+					</pts>
+				</flow>
+				<connector uid="1" polarity="+" isee:polarity_placement="inside" angle="42.1844">
+					<from>Sense_of_Self</from>
+					<to>Change_in_Health</to>
+				</connector>
+				<connector uid="2" polarity="+" isee:polarity_placement="inside" angle="216.87">
+					<from>Physical_Health</from>
+					<to>Building_Sense_of_Self</to>
+				</connector>
+				<aux x="46.6667" y="94.125" name="Initial Sense\nof Self"/>
+				<aux x="46.6667" y="27.9167" name="Initial\nHealth"/>
+				<connector uid="3" polarity="-" isee:polarity_placement="inside" angle="34.1956">
+					<from>Physical_Health</from>
+					<to>Change_in_Health</to>
+				</connector>
+				<aux label_side="right" x="351.917" y="76.125" name="Physical\nHealth AT"/>
+				<connector uid="4" angle="218.052">
+					<from>Physical_Health_AT</from>
+					<to>Change_in_Health</to>
+				</connector>
+				<connector uid="5" polarity="-" isee:polarity_placement="inside" angle="139.066">
+					<from>Sense_of_Self</from>
+					<to>Building_Sense_of_Self</to>
+				</connector>
+				<aux label_side="left" x="161.042" y="286.083" name="Sense of\nSelf AT"/>
+				<connector uid="6" angle="25.5139">
+					<from>Sense_of_Self_AT</from>
+					<to>Building_Sense_of_Self</to>
+				</connector>
+				<stacked_container uid="7" x="550" y="49.167" width="350" height="250">
+					<graph x="550" y="49.167" width="350" height="250" type="time_series" show_grid="false" include_units_in_legend="false" plot_numbers="true" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Wellbeing" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+						<plot color="blue" pen_width="2" index="0" show_y_axis="true">
+							<entity name="Physical_Health"/>
+							<scale min="0" max="100"/>
+						</plot>
+						<plot color="red" pen_width="2" index="1" show_y_axis="true">
+							<entity name="Sense_of_Self"/>
+						</plot>
+						<plot color="fuchsia" pen_width="2" index="2" show_y_axis="true">
+							<entity name="Family_Support"/>
+						</plot>
+					</graph>
+				</stacked_container>
+				<aux x="270.25" y="155" name="Physical\nActivity"/>
+				<connector uid="8" polarity="+" isee:polarity_placement="inside" angle="52.5709">
+					<from>Physical_Activity</from>
+					<to>Change_in_Health</to>
+				</connector>
+				<aux label_side="left" x="194.69" y="338.833" name="Identity\nActivity"/>
+				<connector uid="9" polarity="+" isee:polarity_placement="inside" angle="61.4392">
+					<from>Identity_Activity</from>
+					<to>Building_Sense_of_Self</to>
+				</connector>
+				<stock label_side="center" x="330.417" y="360" name="Family\nSupport"/>
+				<flow x="407.125" y="361.667" name="Change in\nFamily Support">
+					<pts>
+						<pt x="473.333" y="361.667"/>
+						<pt x="352.917" y="361.667"/>
+					</pts>
+				</flow>
+				<connector uid="10" polarity="+" isee:polarity_placement="inside" angle="168.845">
+					<from>Family_Support</from>
+					<to>Building_Sense_of_Self</to>
+				</connector>
+				<connector uid="11" polarity="+" isee:polarity_placement="inside" angle="16.9426">
+					<from>Sense_of_Self</from>
+					<to>Change_in_Family_Support</to>
+				</connector>
+				<aux label_side="top" x="463.833" y="320.833" name="Change in Family\nSupport AT"/>
+				<connector uid="12" polarity="-" isee:polarity_placement="inside" angle="36.7142">
+					<from>Family_Support</from>
+					<to>Change_in_Family_Support</to>
+				</connector>
+				<aux x="46.6667" y="166.667" name="Initial\nFamily\nSupport"/>
+				<connector uid="13" angle="215.756">
+					<from>Change_in_Family_Support_AT</from>
+					<to>Change_in_Family_Support</to>
+				</connector>
+				<aux label_side="right" x="463.833" y="390.917" name="Family\nActivity"/>
+				<connector uid="14" angle="152.715">
+					<from>Family_Activity</from>
+					<to>Change_in_Family_Support</to>
+				</connector>
+				<isee:loop_indicator font_size="9pt" text="R1 Improving health" orientation="counter_clockwise" uid="15" x="188.75" y="149.583" width="49.1667" height="49.1667">
+					<isee:entities>
+						<entity name="Physical_Health"/>
+						<entity name="Sense_of_Self"/>
+						<entity name="Change_in_Health"/>
+						<entity name="Building_Sense_of_Self"/>
+					</isee:entities>
+				</isee:loop_indicator>
+				<isee:loop_indicator font_size="8pt" text="R2 Family support" orientation="clockwise" uid="16" x="279.25" y="275.25" width="57.25" height="57.25">
+					<isee:entities>
+						<entity name="Sense_of_Self"/>
+						<entity name="Change_in_Family_Support"/>
+						<entity name="Family_Support"/>
+						<entity name="Building_Sense_of_Self"/>
+					</isee:entities>
+				</isee:loop_indicator>
+			</view>
+			<view background="white" page_width="1245" page_height="700" home_view="true" type="interface">
+				<style/>
+				<button label="Overview model" uid="17" x="625.928" y="309" width="184" height="79.3333">
+					<actions>
+						<action target="story" view="0" story="18">navigate</action>
+					</actions>
+				</button>
+				<button label="Experiment " uid="19" x="641.333" y="435.667" width="174.667" height="87.3333">
+					<actions>
+						<action target="next_page">navigate</action>
+					</actions>
+				</button>
+				<text_box border_width="3.5" uid="20" x="117.333" y="70.6667" width="338.667" height="62">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; font-size:14pt; font-weight:600; color:#000000;&quot;&gt;Wellbeing Demostration&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</text_box>
+				<text_box uid="21" x="581.333" y="220" width="260" height="64.6667">May, 2018
+The purpose of the Wellbeing concept models is to provide a demonstrator of a system dynamics simulation and interface desing. </text_box>
+				<graphics_frame fill="none" uid="22" x="33.3333" y="206.667" width="100" height="100">
+					<image width="0" height="0" size_to_parent="false" isee:fixed_aspect_ratio="true"/>
+				</graphics_frame>
+				<graphics_frame fill="none" uid="23" x="158.667" y="298.667" width="100" height="100">
+					<image width="0" height="0" size_to_parent="false" isee:fixed_aspect_ratio="true"/>
+				</graphics_frame>
+				<graphics_frame fill="none" uid="24" x="26.6667" y="221.333" width="481.333" height="382.667">
+					<image width="2592" height="1936" size_to_parent="true" isee:fixed_aspect_ratio="true">C:/Users/S55-C5214S/Desktop/Documentos personales/Vancouver/IMG_7306.JPG</image>
+				</graphics_frame>
+			</view>
+			<isee:templates>
+				<view background="white" page_width="1245" page_height="700" zoom="75" type="template">
+					<style/>
+				</view>
+			</isee:templates>
+			<isee:stories>
+				<isee:story uid="18" name="Overview of model ">
+					<view background="white" page_width="1245" page_height="700" type="interface">
+						<style/>
+						<isee:model_view uid="25" x="0" y="0" width="1245" height="700" isee:locked="true" zoom="1" center_x="622.5" center_y="350" locked_view="true" use_visible_list="true">
+							<model name="Top-Level"/>
+							<isee:visible_list>
+								<entity name="Change_in_Health"/>
+								<entity name="Physical_Activity"/>
+								<item uid="5"/>
+								<item uid="3"/>
+								<item uid="8"/>
+								<item uid="2"/>
+								<item uid="15"/>
+								<item uid="1"/>
+								<entity name="Building_Sense_of_Self"/>
+								<entity name="Physical_Health"/>
+								<entity name="Sense_of_Self"/>
+							</isee:visible_list>
+							<isee:highlight_list/>
+						</isee:model_view>
+						<button label="Previous Page " uid="26" x="45.3333" y="60">
+							<actions>
+								<action target="previous_page">navigate</action>
+							</actions>
+						</button>
+						<button label="Next Page " uid="27" x="116" y="60">
+							<actions>
+								<action target="next_page">navigate</action>
+							</actions>
+						</button>
+						<button label="Run" uid="28" x="588" y="374.667">
+							<actions>
+								<action>start</action>
+							</actions>
+						</button>
+						<button label="Go Live " uid="29" x="593.333" y="418.5">
+							<actions>
+								<action>start_stella_live</action>
+							</actions>
+						</button>
+						<button label="Restore" uid="30" x="561.333" y="491.666" width="64" height="30">
+							<actions>
+								<action>unknown</action>
+							</actions>
+						</button>
+						<button label="Stop Live" uid="31" x="593.333" y="460">
+							<actions>
+								<action>stop_stella_live</action>
+							</actions>
+						</button>
+						<stacked_container uid="32" x="620" y="45.667" width="350" height="250">
+							<graph x="620" y="45.667" width="350" height="250" type="time_series" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+								<plot color="red" pen_width="1" index="0" show_y_axis="true">
+									<entity name="Sense_of_Self"/>
+								</plot>
+								<plot color="blue" pen_style="dot_dashed" pen_width="1" index="1" show_y_axis="true">
+									<entity name="Physical_Health"/>
+								</plot>
+							</graph>
+						</stacked_container>
+						<slider uid="33" x="683.833" y="375.167" width="230.333" height="28.3333" min="-0.5" max="0.5" isee:navigate_to="false" show_name="true">
+							<entity name="Physical_Activity"/>
+							<reset_to after="never">0</reset_to>
+						</slider>
+						<slider uid="34" x="702.499" y="433.5" width="209.522" height="39" isee:navigate_to="false" show_name="true">
+							<entity name="Identity_Activity"/>
+							<reset_to after="never">0</reset_to>
+						</slider>
+						<text_box border_color="#160022" uid="35" x="979.487" y="358.872" width="173.59" height="72.9237">&lt;!DOCTYPE HTML PUBLIC &quot;-//W3C//DTD HTML 4.0//EN&quot; &quot;http://www.w3.org/TR/REC-html40/strict.dtd&quot;&gt;
+&lt;html&gt;&lt;head&gt;&lt;meta name=&quot;qrichtext&quot; content=&quot;1&quot; /&gt;&lt;style type=&quot;text/css&quot;&gt;
+p, li { white-space: pre-wrap; }
+&lt;/style&gt;&lt;/head&gt;&lt;body style=&quot; font-family:&apos;MS Shell Dlg 2&apos;; font-size:7.8pt; font-weight:400; font-style:normal;&quot;&gt;
+&lt;p style=&quot; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;&quot;&gt;&lt;span style=&quot; font-family:&apos;Arial&apos;; font-size:12pt; color:#000000;&quot;&gt;Physical Activity and Identity activity are converter.&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</text_box>
+					</view>
+					<view background="white" page_width="1245" page_height="700" type="interface">
+						<style/>
+						<isee:model_view uid="36" x="0" y="0" width="1245" height="700" isee:locked="true" zoom="1" center_x="622.5" center_y="350" locked_view="true" use_visible_list="true">
+							<model name="Top-Level"/>
+							<isee:visible_list>
+								<entity name="Change_in_Health"/>
+								<item uid="16"/>
+								<item uid="12"/>
+								<item uid="5"/>
+								<entity name="Physical_Activity"/>
+								<entity name="Family_Support"/>
+								<entity name="Identity_Activity"/>
+								<item uid="11"/>
+								<item uid="14"/>
+								<entity name="Sense_of_Self"/>
+								<item uid="8"/>
+								<item uid="2"/>
+								<item uid="15"/>
+								<entity name="Family_Activity"/>
+								<item uid="10"/>
+								<item uid="1"/>
+								<entity name="Physical_Health"/>
+								<item uid="9"/>
+								<item uid="3"/>
+								<entity name="Change_in_Family_Support"/>
+								<entity name="Building_Sense_of_Self"/>
+							</isee:visible_list>
+							<isee:highlight_list>
+								<item uid="9"/>
+								<item uid="16"/>
+								<entity name="Change_in_Family_Support"/>
+								<item uid="12"/>
+								<entity name="Family_Support"/>
+								<entity name="Identity_Activity"/>
+								<item uid="11"/>
+								<item uid="14"/>
+								<item uid="10"/>
+								<entity name="Family_Activity"/>
+							</isee:highlight_list>
+						</isee:model_view>
+						<button label="Previous Page" uid="37" x="49.3333" y="42.6667">
+							<actions>
+								<action>unknown</action>
+							</actions>
+						</button>
+						<button label="Home Page" uid="38" x="93.3333" y="27.6667" width="64" height="30">
+							<actions>
+								<action>unknown</action>
+							</actions>
+						</button>
+						<button label="Run" uid="39" x="573.333" y="400">
+							<actions>
+								<action>start</action>
+							</actions>
+						</button>
+						<button label="Go Live " uid="40" x="573.333" y="438.667">
+							<actions>
+								<action>start_stella_live</action>
+							</actions>
+						</button>
+						<button label="Remove" uid="41" x="573.333" y="533.333">
+							<actions>
+								<action>restore_all</action>
+							</actions>
+						</button>
+						<button label="Stop Live" uid="42" x="573.333" y="484">
+							<actions>
+								<action>stop_stella_live</action>
+							</actions>
+						</button>
+						<stacked_container uid="43" x="495.667" y="68.333" width="350" height="250">
+							<graph x="495.667" y="68.333" width="350" height="250" type="time_series" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+								<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+									<entity name="Physical_Health"/>
+								</plot>
+								<plot color="fuchsia" pen_style="dot_dashed" pen_width="1" index="1" show_y_axis="true">
+									<entity name="Family_Support"/>
+								</plot>
+								<plot color="red" pen_style="dotted" pen_width="1" index="2" show_y_axis="true">
+									<entity name="Sense_of_Self"/>
+								</plot>
+							</graph>
+						</stacked_container>
+						<slider uid="44" x="752" y="400" isee:navigate_to="false" show_name="true">
+							<entity name="Physical_Activity"/>
+							<reset_to after="never">0</reset_to>
+						</slider>
+						<slider uid="45" x="745.333" y="462.667" isee:navigate_to="false" show_name="true">
+							<entity name="Identity_Activity"/>
+							<reset_to after="never">0</reset_to>
+						</slider>
+						<slider uid="46" x="752" y="533.333" isee:navigate_to="false" show_name="true">
+							<entity name="Family_Activity"/>
+							<reset_to after="never">0</reset_to>
+						</slider>
+						<text_box uid="47" x="892" y="375" width="260" height="58"> What do you 
+see? What happened? Why?</text_box>
+					</view>
+					<view background="white" page_width="1245" page_height="700" type="interface">
+						<style/>
+						<isee:model_view uid="48" x="0" y="0" width="1245" height="700" isee:locked="true" zoom="1" center_x="622.5" center_y="350" locked_view="true" use_visible_list="true" show_animations="true">
+							<model name="Top-Level"/>
+							<isee:visible_list/>
+							<isee:highlight_list/>
+						</isee:model_view>
+						<stacked_container uid="49" x="474" y="202">
+							<graph x="299" y="77" width="350" height="250" type="time_series" show_grid="false" include_units_in_legend="false" plot_numbers="false" isee:label_pie_slices="false" num_x_grid_lines="0" num_y_grid_lines="0" num_x_labels="5" num_y_labels="3" title="Graph" isee:fill_intensity="0.1" left_axis_multi_scale="false" left_axis_auto_scale="true" right_axis_multi_scale="false" right_axis_auto_scale="true">
+								<plot color="blue" pen_width="1" index="0" show_y_axis="true">
+									<entity name="Physical_Health"/>
+								</plot>
+								<plot color="red" pen_style="dot_dashed" pen_width="1" index="1" show_y_axis="true">
+									<entity name="Sense_of_Self"/>
+								</plot>
+								<plot color="fuchsia" pen_style="dotted" pen_width="1" index="2" show_y_axis="true">
+									<entity name="Family_Support"/>
+								</plot>
+							</graph>
+						</stacked_container>
+						<slider uid="50" x="383" y="380" isee:navigate_to="false" show_name="true">
+							<entity name="Physical_Activity"/>
+							<reset_to after="never"/>
+						</slider>
+						<slider uid="51" x="386" y="458" isee:navigate_to="false" show_name="true">
+							<entity name="Identity_Activity"/>
+							<reset_to after="never"/>
+						</slider>
+						<slider uid="52" x="398" y="548" isee:navigate_to="false" show_name="true">
+							<entity name="Family_Activity"/>
+							<reset_to after="never"/>
+						</slider>
+						<button label="Run" uid="53" x="592.333" y="438">
+							<actions>
+								<action>start</action>
+							</actions>
+						</button>
+						<button label="Go Live " uid="54" x="592.333" y="476.667">
+							<actions>
+								<action>start_stella_live</action>
+							</actions>
+						</button>
+						<button label="Import" uid="55" x="592.333" y="571.333">
+							<actions>
+								<action>import_data</action>
+							</actions>
+						</button>
+						<button label="Stop Live" uid="56" x="673.333" y="476.667">
+							<actions>
+								<action>stop_stella_live</action>
+							</actions>
+						</button>
+						<button label="Restore" uid="57" x="592.333" y="522">
+							<actions>
+								<action>restore_all</action>
+							</actions>
+						</button>
+						<button label="Export" uid="58" x="684.333" y="571.333">
+							<actions>
+								<action orientation="vertical" type="export_data"/>
+							</actions>
+						</button>
+						<text_box uid="59" x="42" y="250" width="173" height="141">If we had to choose two places to intervene in a program with the hope of 
+preventing the negative effects of an adverse event, where 
+should we focus our 
+efforts according to the model? 
+Why? </text_box>
+					</view>
+				</isee:story>
+			</isee:stories>
+		</views>
+	</model>
+</xmile>
+
